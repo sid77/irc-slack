@@ -25,8 +25,8 @@ type Server struct {
 	TLSConfig            *tls.Config
 }
 
-// Start runs the IRC server
-func (s Server) Start() error {
+// Listen prepare the server listener
+func (s Server) Listen() (Server, error) {
 	var err error
 	if s.TLSConfig != nil {
 		s.Listener, err = tls.Listen("tcp", s.LocalAddr.String(), s.TLSConfig)
@@ -34,10 +34,15 @@ func (s Server) Start() error {
 		s.Listener, err = net.Listen("tcp", s.LocalAddr.String())
 	}
 	if err != nil {
-		return err
+		return s, err
 	}
-	defer s.Listener.Close()
 	log.Infof("Listening on %v", s.LocalAddr)
+	return s, err
+}
+
+// Start runs the IRC server
+func (s Server) Start() error {
+	defer s.Listener.Close()
 	for {
 		conn, err := s.Listener.Accept()
 		if err != nil {

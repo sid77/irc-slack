@@ -101,11 +101,6 @@ func main() {
 		}
 		tlsConfig = &tls.Config{Certificates: []tls.Certificate{cert}}
 	}
-	if *user != "" {
-		if err := drop.DropPrivileges(*user); err != nil {
-			log.Fatalf("Failed to drop privileges to user '%s': %v", *user, err)
-		}
-	}
 	server := Server{
 		LocalAddr:            &localAddr,
 		Name:                 sName,
@@ -115,6 +110,15 @@ func main() {
 		SlackDebug:           *flagSlackDebug,
 		Pagination:           *flagPagination,
 		TLSConfig:            tlsConfig,
+	}
+	server, err := server.Listen()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if *user != "" {
+		if err := drop.DropPrivileges(*user); err != nil {
+			log.Fatalf("Failed to drop privileges to user '%s': %v", *user, err)
+		}
 	}
 	if err := server.Start(); err != nil {
 		log.Fatal(err)
