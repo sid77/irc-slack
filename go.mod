@@ -10,6 +10,7 @@ require (
 	github.com/lusis/slack-test v0.0.0-20190426140909-c40012f20018 // indirect
 	github.com/mattn/go-colorable v0.1.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/sid77/drop v0.0.0-20171115104544-48930369f4db
 	github.com/sirupsen/logrus v1.5.0
 	github.com/slack-go/slack v0.6.3
 	github.com/stretchr/testify v1.4.0

@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/coredhcp/coredhcp/logger"
+	"github.com/sid77/drop"
 	"github.com/sirupsen/logrus"
 )
 
@@ -35,6 +36,7 @@ var (
 	flagPagination       = flag.Int("P", 0, "Pagination value for API calls. If 0 or unspecified, use the recommended default (currently 200). Larger values can help on large Slack teams")
 	flagKey              = flag.String("key", "", "TLS key for HTTPS server. Requires -cert")
 	flagCert             = flag.String("cert", "", "TLS certificate for HTTPS server. Requires -key")
+	user                 = flag.String("u", "", "User to drop privileges to after program setup")
 )
 
 var log = logger.GetLogger("main")
@@ -98,6 +100,11 @@ func main() {
 			log.Fatalf("Failed to load TLS key/cert: %v", err)
 		}
 		tlsConfig = &tls.Config{Certificates: []tls.Certificate{cert}}
+	}
+	if *user != "" {
+		if err := drop.DropPrivileges(*user); err != nil {
+			log.Fatalf("Failed to drop privileges to user '%s': %v", *user, err)
+		}
 	}
 	server := Server{
 		LocalAddr:            &localAddr,

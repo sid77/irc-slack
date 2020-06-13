@@ -187,19 +187,25 @@ Usage of ./irc-slack:
   -H string
         IP address to listen on (default "127.0.0.1")
   -L string
-        Log level. One of [debug info warning error fatal none] (default "info")
+        Log level. One of [none debug info warning error fatal] (default "info")
   -P int
         Pagination value for API calls. If 0 or unspecified, use the recommended default (currently 200). Larger values can help on large Slack teams
+  -cert string
+        TLS certificate for HTTPS server. Requires -key
   -chunk int
         Maximum size of a line to send to the client. Only works for certain reply types (default 512)
   -d string
         If set will download attachments to this location
+  -key string
+        TLS key for HTTPS server. Requires -cert
   -l string
         If set will overwrite urls to attachments with this prefix and local file name inside the path set with -d
   -p int
         Local port to listen on (default 6666)
   -s string
         IRC server name (i.e. the host name to send to clients)
+  -u string
+        User to drop privileges to after program setup
 ```
 
 ## Deploying with Puppet
